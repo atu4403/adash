@@ -17,3 +17,5 @@ s = "abcabc"
 obj = {"a": "!", "b": "", "c": "?"}
 _.replace_all(s, obj) #-> !?!?
 ```
+
+[adash API documentation](https://atu4403.github.io/adash/adash/)
