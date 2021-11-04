@@ -20,5 +20,5 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - uses: atu4403/poetry-setup-multi-platform@v1
-      - run: poetry shell&&pytest
+      - run: poetry --version
         shell: bash
