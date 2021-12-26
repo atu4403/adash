@@ -29,7 +29,7 @@
 <pre><code class="python">from datetime import timedelta, datetime
 
 
-def date_list(day: int = 30, start: str = &#39;today&#39;, fmt: str = &#39;%Y-%m-%d&#39;, rev=False):
+def date_list(day: int = 30, start: str = &#34;today&#34;, fmt: str = &#34;%Y-%m-%d&#34;, rev=False):
     &#34;&#34;&#34;n日前までの日付文字列をlist化
     Args:
         day (int): 日数
@@ -51,7 +51,7 @@ def date_list(day: int = 30, start: str = &#39;today&#39;, fmt: str = &#39;%Y-%m
         https://docs.python.org/ja/3/library/datetime.html#strftime-strptime-behavior
     &#34;&#34;&#34;
     d = datetime.now()
-    if start != &#39;today&#39;:
+    if start != &#34;today&#34;:
         d = datetime.strptime(start, fmt)
     li = [d.strftime(fmt)]
     for _ in range(day - 1):
@@ -104,7 +104,7 @@ def date_list(day: int = 30, start: str = &#39;today&#39;, fmt: str = &#39;%Y-%m
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def date_list(day: int = 30, start: str = &#39;today&#39;, fmt: str = &#39;%Y-%m-%d&#39;, rev=False):
+<pre><code class="python">def date_list(day: int = 30, start: str = &#34;today&#34;, fmt: str = &#34;%Y-%m-%d&#34;, rev=False):
     &#34;&#34;&#34;n日前までの日付文字列をlist化
     Args:
         day (int): 日数
@@ -126,7 +126,7 @@ def date_list(day: int = 30, start: str = &#39;today&#39;, fmt: str = &#39;%Y-%m
         https://docs.python.org/ja/3/library/datetime.html#strftime-strptime-behavior
     &#34;&#34;&#34;
     d = datetime.now()
-    if start != &#39;today&#39;:
+    if start != &#34;today&#34;:
         d = datetime.strptime(start, fmt)
     li = [d.strftime(fmt)]
     for _ in range(day - 1):
