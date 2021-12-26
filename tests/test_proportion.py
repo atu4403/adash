@@ -7,7 +7,7 @@ class TestProportion:
         _p = _.proportion
         assert _p(100, 99) == -1
         assert _p(203, 7) == -96.55
-        assert _p(203, 7, '0.001') == -96.552
+        assert _p(203, 7, "0.001") == -96.552
         assert _p(0.25, 0.51) == 104
         assert _p(100, 25) == -75
         assert _p(10, 0) == -100
@@ -30,7 +30,7 @@ class TestProgressRate:
         assert _p(50, 0) == 0
         assert _p(50, 50) == 100
         assert _p(50, 12.031454) == 24.06
-        assert _p(50, 12.031454, '0.00001') == 24.06291
+        assert _p(50, 12.031454, "0.00001") == 24.06291
         assert isnan(_p(0, -50))
         assert isnan(_p(None, -50))
 
@@ -38,6 +38,6 @@ class TestProgressRate:
 def test_001():
     print(dir(_))
     for f in dir(_):
-        if not f.startswith('__'):
+        if not f.startswith("__"):
             # print(_[f].__doc__)
             print(f.__doc__)

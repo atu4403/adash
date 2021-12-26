@@ -4,8 +4,8 @@ import src.adash as _
 
 
 def test_download():
-    url = 'https://cdn.jsdelivr.net/npm/js-hello-world@1.0.0/helloWorld.js'
-    path = 'tmp/hello.js'
+    url = "https://cdn.jsdelivr.net/npm/js-hello-world@1.0.0/helloWorld.js"
+    path = "tmp/hello.js"
     p = pathlib.Path(path)
     assert not p.exists()
     assert _.download(url, p) == 1
