@@ -126,10 +126,18 @@ def split_uppercase(s: str) -> list:
 
 
 def to_md5(s: str):
-    """文字列をmd5化"""
+    """文字列をmd5化
+    Example:
+        >>> to_md5('test')
+        '098f6bcd4621d373cade4e832627b4f6'
+    """
     return hashlib.md5(s.encode()).hexdigest()
 
 
 def to_sha256(s: str):
-    """文字列をsha256化"""
+    """文字列をsha256化
+    Example:
+        >>> to_sha256('test')
+        '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08'
+    """
     return hashlib.sha256(s.encode()).hexdigest()
