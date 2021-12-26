@@ -1,5 +1,6 @@
 import re
 import unicodedata
+import hashlib
 from typing import Any
 
 
@@ -123,3 +124,14 @@ def split_uppercase(s: str) -> list:
         ['Next', 'Accumulated', 'Q2', 'Duration']
     """
     return re.findall(r'[A-Z]+[a-z0-9]*', s)
+
+
+def to_md5(s: str):
+    """文字列をmd5化
+    """
+    return hashlib.md5(s.encode()).hexdigest()
+
+def to_sha256(s: str):
+    """文字列をsha256化
+    """
+    return hashlib.sha256(s.encode()).hexdigest()

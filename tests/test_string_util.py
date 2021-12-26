@@ -63,6 +63,19 @@ class TestToDate:
 
 class TestSplitUpperCase:
     def test_01(self):
-        assert _.split_uppercase('IsJSON') == ['Is', 'JSON']
-        assert _.split_uppercase('ILoveYou') == ['ILove', 'You']
-        assert _.split_uppercase('NextAccumulatedQ2Duration') == ['Next', 'Accumulated', 'Q2', 'Duration']
+
+
+class TestHash:
+    def test_md5(self):
+        assert _.to_md5("test") == "098f6bcd4621d373cade4e832627b4f6"
+        assert _.to_md5("test1") == "5a105e8b9d40e1329780d62ea2265d8a"
+
+    def test_sha256(self):
+        assert (
+            _.to_sha256("test")
+            == "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+        )
+        assert (
+            _.to_sha256("test1")
+            == "1b4f0e9851971998e732078544c96b36c3d01cedf7caa332359d6f1d83567014"
+        )
