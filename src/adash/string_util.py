@@ -31,7 +31,7 @@ def to_half_string(s: str) -> str:
     return unicodedata.normalize("NFKC", s)
 
 
-def to_number(s: str, default: Any = float('NAN')) -> Any:
+def to_number(s: str, default: Any = float("NAN")) -> Any:
     """文字列を数値化
     Example:
         >>> to_number('△12,345')
@@ -47,11 +47,7 @@ def to_number(s: str, default: Any = float('NAN')) -> Any:
         >>> to_number('abc', '123')
         '123'
     """
-    rep_dict = {
-        '[△▲Δ]': '-',
-        '[,、銭%％]': '',
-        '[円]': '.'
-    }
+    rep_dict = {"[△▲Δ]": "-", "[,、銭%％]": "", "[円]": "."}
     s = to_half_string(s)
     s = replace_all(s, rep_dict)
     try:
@@ -76,27 +72,30 @@ def to_date(s: str) -> Any:
         >>> to_date('20211010')
         '2021-10-10'
     """
-    meiji = 'meiji'
-    taisyou = 'taisyou'
-    syouwa = 'syouwa'
-    heisei = 'heisei'
-    reiwa = 'reiwa'
+    meiji = "meiji"
+    taisyou = "taisyou"
+    syouwa = "syouwa"
+    heisei = "heisei"
+    reiwa = "reiwa"
     s = to_half_string(s)
-    s = replace_all(s, {
-        '[年月/]': '-',
-        r'[日\s]': '',
-        '[元]': '1',
-        r'(明治|明)': meiji,
-        r'(大正|大)': taisyou,
-        r'(昭和|昭)': syouwa,
-        r'(平成|平)': heisei,
-        r'(令和|令)': reiwa,
-    })
+    s = replace_all(
+        s,
+        {
+            "[年月/]": "-",
+            r"[日\s]": "",
+            "[元]": "1",
+            r"(明治|明)": meiji,
+            r"(大正|大)": taisyou,
+            r"(昭和|昭)": syouwa,
+            r"(平成|平)": heisei,
+            r"(令和|令)": reiwa,
+        },
+    )
     # 数字8桁ならハイフン挿入
-    m = re.match(r'^\d{8}$', s)
+    m = re.match(r"^\d{8}$", s)
     if m:
-        s = re.sub(r'(\d{4})(\d{2})(\d{2})', r'\1-\2-\3', s)
-    m = re.match(r'(\D*)(\d*)-(\d*)-(\d*)', s)
+        s = re.sub(r"(\d{4})(\d{2})(\d{2})", r"\1-\2-\3", s)
+    m = re.match(r"(\D*)(\d*)-(\d*)-(\d*)", s)
     if m:
         era, year, month, day = m.groups()
         if era:
@@ -111,9 +110,9 @@ def to_date(s: str) -> Any:
             elif era == reiwa:
                 year = int(year) + 2019 - 1
             year = str(year)
-        month = f'0{month}' if len(month) == 1 else month
-        day = f'0{day}' if len(day) == 1 else day
-        return f'{year}-{month}-{day}'
+        month = f"0{month}" if len(month) == 1 else month
+        day = f"0{day}" if len(day) == 1 else day
+        return f"{year}-{month}-{day}"
     return None
 
 
@@ -123,15 +122,14 @@ def split_uppercase(s: str) -> list:
         >>> split_uppercase('NextAccumulatedQ2Duration')
         ['Next', 'Accumulated', 'Q2', 'Duration']
     """
-    return re.findall(r'[A-Z]+[a-z0-9]*', s)
+    return re.findall(r"[A-Z]+[a-z0-9]*", s)
 
 
 def to_md5(s: str):
-    """文字列をmd5化
-    """
+    """文字列をmd5化"""
     return hashlib.md5(s.encode()).hexdigest()
 
+
 def to_sha256(s: str):
-    """文字列をsha256化
-    """
+    """文字列をsha256化"""
     return hashlib.sha256(s.encode()).hexdigest()

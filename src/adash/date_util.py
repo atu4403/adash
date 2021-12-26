@@ -1,7 +1,7 @@
 from datetime import timedelta, datetime
 
 
-def date_list(day: int = 30, start: str = 'today', fmt: str = '%Y-%m-%d', rev=False):
+def date_list(day: int = 30, start: str = "today", fmt: str = "%Y-%m-%d", rev=False):
     """n日前までの日付文字列をlist化
     Args:
         day (int): 日数
@@ -23,7 +23,7 @@ def date_list(day: int = 30, start: str = 'today', fmt: str = '%Y-%m-%d', rev=Fa
         https://docs.python.org/ja/3/library/datetime.html#strftime-strptime-behavior
     """
     d = datetime.now()
-    if start != 'today':
+    if start != "today":
         d = datetime.strptime(start, fmt)
     li = [d.strftime(fmt)]
     for _ in range(day - 1):
