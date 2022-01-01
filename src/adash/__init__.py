@@ -1,7 +1,7 @@
 """
 .. include:: ../../README.md
 """
-from .download import download
+from .file_util import download
 from .string_util import (
     replace_all,
     to_half_string,
