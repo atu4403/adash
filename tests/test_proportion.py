@@ -33,11 +33,3 @@ class TestProgressRate:
         assert _p(50, 12.031454, "0.00001") == 24.06291
         assert isnan(_p(0, -50))
         assert isnan(_p(None, -50))
-
-
-def test_001():
-    print(dir(_))
-    for f in dir(_):
-        if not f.startswith("__"):
-            # print(_[f].__doc__)
-            print(f.__doc__)
