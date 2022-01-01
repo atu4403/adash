@@ -1,9 +1,11 @@
+from typing import Any, Union
 import urllib.request
 import urllib.error
 import pathlib
 import warnings
 import os
 import time
+import json
 
 
 def download(url, save_path, sleep=1):
@@ -30,3 +32,42 @@ def download(url, save_path, sleep=1):
         warnings.warn(f"{e.code}: {e.reason}")
         warnings.warn(f"url: {url}")
         return 0
+
+
+def json_write(obj: Union[dict, list], file_path: str, overwrite: bool = False) -> int:
+    """dictをjsonファイルに書き込む
+
+    Args:
+        obj (Union[dict, list]): json化するオブジェクト
+        file_path (str): ファイルパス
+        overwrite (bool, optional): Trueで上書きを許す. Defaults to False.
+
+    Returns:
+        int: 成功なら1が返る
+
+    Example:
+        > _.json_write({"a": 1}, "path/to/sample.json")
+        > _.json_write({"a": 1}, "path/to/sample.json", overwrite=True)
+    """
+    file_path = pathlib.Path(file_path)
+    if not overwrite and file_path.exists():
+        return 0
+    os.makedirs(file_path.parent, exist_ok=True)
+    file_path.write_text(json.dumps(obj))
+    return 1
+
+
+def json_read(file_path: str) -> Any:
+    """jsonファイルを読み込んでdict化する
+
+    Args:
+        file_path (str): ファイルパス
+
+    Returns:
+        Any: dictもしくはlist
+
+    Example:
+        > _.json_read("path/to/sample.json")
+    """
+    file_path = pathlib.Path(file_path)
+    return json.loads(file_path.read_text())
