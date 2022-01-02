@@ -74,8 +74,8 @@ def json_write(obj: Union[dict, list], file_path: str, overwrite: bool = False) 
         int: 成功なら1が返る
 
     Example:
-        _.json_write({&#34;a&#34;: 1}, &#34;path/to/sample.json&#34;)
-        _.json_write({&#34;a&#34;: 1}, &#34;path/to/sample.json&#34;, overwrite=True)
+        &gt; _.json_write({&#34;a&#34;: 1}, &#34;path/to/sample.json&#34;)
+        &gt; _.json_write({&#34;a&#34;: 1}, &#34;path/to/sample.json&#34;, overwrite=True)
     &#34;&#34;&#34;
     file_path = pathlib.Path(file_path)
     if not overwrite and file_path.exists():
@@ -95,7 +95,7 @@ def json_read(file_path: str) -&gt; Any:
         Any: dictもしくはlist
 
     Example:
-        _.json_read(&#34;path/to/sample.json&#34;)
+        &gt; _.json_read(&#34;path/to/sample.json&#34;)
     &#34;&#34;&#34;
     file_path = pathlib.Path(file_path)
     return json.loads(file_path.read_text())</code></pre>
@@ -173,7 +173,9 @@ def json_read(file_path: str) -&gt; Any:
 <dd>dictもしくはlist</dd>
 </dl>
 <h2 id="example">Example</h2>
-<p>_.json_read("path/to/sample.json")</p></div>
+<blockquote>
+<p>_.json_read("path/to/sample.json")</p>
+</blockquote></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -188,7 +190,7 @@ def json_read(file_path: str) -&gt; Any:
         Any: dictもしくはlist
 
     Example:
-        _.json_read(&#34;path/to/sample.json&#34;)
+        &gt; _.json_read(&#34;path/to/sample.json&#34;)
     &#34;&#34;&#34;
     file_path = pathlib.Path(file_path)
     return json.loads(file_path.read_text())</code></pre>
@@ -214,8 +216,10 @@ def json_read(file_path: str) -&gt; Any:
 <dd>成功なら1が返る</dd>
 </dl>
 <h2 id="example">Example</h2>
+<blockquote>
 <p><em>.json_write({"a": 1}, "path/to/sample.json")
-</em>.json_write({"a": 1}, "path/to/sample.json", overwrite=True)</p></div>
+</em>.json_write({"a": 1}, "path/to/sample.json", overwrite=True)</p>
+</blockquote></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -232,8 +236,8 @@ def json_read(file_path: str) -&gt; Any:
         int: 成功なら1が返る
 
     Example:
-        _.json_write({&#34;a&#34;: 1}, &#34;path/to/sample.json&#34;)
-        _.json_write({&#34;a&#34;: 1}, &#34;path/to/sample.json&#34;, overwrite=True)
+        &gt; _.json_write({&#34;a&#34;: 1}, &#34;path/to/sample.json&#34;)
+        &gt; _.json_write({&#34;a&#34;: 1}, &#34;path/to/sample.json&#34;, overwrite=True)
     &#34;&#34;&#34;
     file_path = pathlib.Path(file_path)
     if not overwrite and file_path.exists():
