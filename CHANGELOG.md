@@ -1,13 +1,28 @@
+# Changelog
+All notable changes to this project will be documented in this file.
+
+<a name="v1.2.0"></a>
+## [v1.2.0](/compare/v1.1.0...v1.2.0)
+
+> 2022-01-01
+
 
 <a name="v1.1.0"></a>
 ## [v1.1.0](/compare/v1.0.0...v1.1.0)
 
 > 2022-01-01
 
+### Code Refactoring
+
+* ファイル名の変更
+
 ### Features
 
-* add json_read
-* add json_write
+* json_read, json_writeを追加
+
+### Pull Requests
+
+* Merge pull request [#2](/issues/2) from atu4403/release_poetry
 
 
 <a name="v1.0.0"></a>
@@ -28,3 +43,8 @@
 ### Features
 
 * add date_list
+
+### Pull Requests
+
+* Merge pull request [#1](/issues/1) from atu4403/date_util
+
