@@ -46,8 +46,8 @@ def json_write(obj: Union[dict, list], file_path: str, overwrite: bool = False) 
         int: 成功なら1が返る
 
     Example:
-        > _.json_write({"a": 1}, "path/to/sample.json")
-        > _.json_write({"a": 1}, "path/to/sample.json", overwrite=True)
+        _.json_write({"a": 1}, "path/to/sample.json")
+        _.json_write({"a": 1}, "path/to/sample.json", overwrite=True)
     """
     file_path = pathlib.Path(file_path)
     if not overwrite and file_path.exists():
@@ -67,7 +67,7 @@ def json_read(file_path: str) -> Any:
         Any: dictもしくはlist
 
     Example:
-        > _.json_read("path/to/sample.json")
+        _.json_read("path/to/sample.json")
     """
     file_path = pathlib.Path(file_path)
     return json.loads(file_path.read_text())
