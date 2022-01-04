@@ -1,7 +1,7 @@
 """
 .. include:: ../../README.md
 """
-from .file_util import download, json_read, json_write
+from .file_util import download, json_read, json_write, cat
 from .string_util import (
     replace_all,
     to_half_string,
