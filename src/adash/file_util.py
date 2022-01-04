@@ -71,3 +71,22 @@ def json_read(file_path: str) -> Any:
     """
     file_path = pathlib.Path(file_path)
     return json.loads(file_path.read_text())
+
+
+def cat(file_path: str) -> str:
+    """pathlib.Path().read_textのshortcut
+
+    Args:
+        file_path (str): filepath
+
+    Returns:
+        str: file内の文字列
+
+    Example:
+        >>> cat('unknown.txt')
+
+    """
+    file_path = pathlib.Path(file_path)
+    if file_path.is_file():
+        return file_path.read_text()
+    return None

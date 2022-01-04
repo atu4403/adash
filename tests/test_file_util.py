@@ -53,3 +53,22 @@ class TestJson:
         assert _.json_write({"a": 1}, ppath, overwrite=True) == 1
         assert _.json_read(ppath) == {"a": 1}
         assert _.json_write({"a": 1}, ppath) == 0
+
+
+class TestCat:
+    @pytest.fixture()
+    def path(self):
+        _p = "tmp/hello.js"
+        _.json_write({"a": 1}, _p)
+        yield _p
+        _p = pathlib.Path(_p)
+        if _p.exists():
+            pathlib.Path(_p).unlink()
+
+    def test_cat(self, path):
+        s = _.cat("tmp/hello.js")
+        assert s == '{"a": 1}'
+
+    def test_cat_is_none(self, path):
+        s = _.cat("tmp/unknown.js")
+        assert s is None
