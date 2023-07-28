@@ -46,3 +46,53 @@ class TestAllkeys:
 
     def test_03(self):
         assert _.allkeys({"a": 1, "b": 1}) == ["a", "b"]
+
+
+class TestFind:
+    def test_01(self):
+        users = [
+            {"user": "barney", "age": 36, "active": True},
+            {"user": "fred", "age": 40, "active": False},
+            {"user": "pebbles", "age": 1, "active": True},
+        ]
+        assert _.find(users, {"age": 1, "active": True}) == {
+            "user": "pebbles",
+            "age": 1,
+            "active": True,
+        }
+
+    def test_02(self):
+        users = [
+            {"user": "barney", "age": 36, "active": True},
+            {"user": "fred", "age": 40, "active": False},
+            {"user": "pebbles", "age": 1, "active": True},
+        ]
+        assert _.find(users, "active") == {"user": "barney", "age": 36, "active": True}
+
+    def test_03(self):
+        users = [
+            {"user": "barney", "age": 36, "active": True},
+            {"user": "fred", "age": 40, "active": False},
+            {"user": "pebbles", "age": 1, "active": True},
+        ]
+        assert _.find(users, lambda x: x["age"] < 40 or not x["active"]) == {
+            "user": "barney",
+            "age": 36,
+            "active": True,
+        }
+
+    def test_04(self):
+        items = ["apple", "banana", "cherry", "date"]
+        assert _.find(items, lambda x: x.startswith("b")) == "banana"
+
+    def test_05(self):
+        items = ["apple", "banana", "cherry", "date"]
+        assert _.find(items, "grape") is None
+
+    def test_06(self):
+        users = [
+            {"user": "barney", "age": 36, "active": True},
+            {"user": "fred", "age": 40, "active": False},
+            {"user": "pebbles", "age": 1, "active": True},
+        ]
+        assert _.find(users, {"age": 100, "active": False}) is None
