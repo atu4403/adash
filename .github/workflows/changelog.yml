@@ -1,0 +1,42 @@
+name: Generate Changelog and Create PR
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  generate-and-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Generate Changelog
+      uses: mikepenz/release-changelog-builder-action@v2
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create new branch
+      run: |
+        git checkout -b changelog-update-${GITHUB_SHA}
+
+    - name: Commit changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add CHANGELOG.md
+        git commit -m "Update CHANGELOG"
+
+    - name: Push changes
+      run: |
+        git push origin changelog-update-${GITHUB_SHA}
+
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        title: "Update CHANGELOG"
+        body: "This PR updates the CHANGELOG with recent changes."
+        base: "main"
