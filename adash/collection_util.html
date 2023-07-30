@@ -49,7 +49,49 @@
             keys += [parent + &#34;.&#34; + child for child in allkeys(children)]
         else:
             keys.append(parent)
-    return keys</code></pre>
+    return keys
+
+def find(lst, predicate):
+    &#34;&#34;&#34;
+    Listの中から、predicateの条件に合致する最初の要素を返す。
+    
+    Args:
+        lst (list): 検索対象のリスト。
+        predicate (Union[dict, str, Callable]): 検索条件。辞書、文字列、または関数（ラムダ式を含む）のいずれか。
+    
+    Returns:
+        dict or None: 条件に合致する最初の要素。合致する要素がない場合はNone.
+        
+    Example:
+        &gt;&gt;&gt; users = [
+        ...     { &#39;user&#39;: &#39;barney&#39;,  &#39;age&#39;: 36, &#39;active&#39;: True },
+        ...     { &#39;user&#39;: &#39;fred&#39;,    &#39;age&#39;: 40, &#39;active&#39;: False },
+        ...     { &#39;user&#39;: &#39;pebbles&#39;, &#39;age&#39;: 1,  &#39;active&#39;: True }
+        ... ]
+        &gt;&gt;&gt; find(users, {&#39;age&#39;: 1, &#39;active&#39;: True})
+        {&#39;user&#39;: &#39;pebbles&#39;, &#39;age&#39;: 1, &#39;active&#39;: True}
+        &gt;&gt;&gt; find(users, &#39;active&#39;)
+        {&#39;user&#39;: &#39;barney&#39;, &#39;age&#39;: 36, &#39;active&#39;: True}
+        &gt;&gt;&gt; find(users, lambda x: x[&#39;age&#39;] &lt; 40 or not x[&#39;active&#39;])
+        {&#39;user&#39;: &#39;barney&#39;, &#39;age&#39;: 36, &#39;active&#39;: True}
+    &#34;&#34;&#34;
+    if isinstance(predicate, dict):
+        for item in lst:
+            if all(item[key] == val for key, val in predicate.items()):
+                return item
+    elif isinstance(predicate, str):
+        for item in lst:
+            if isinstance(item, dict):
+                if item.get(predicate) is True:
+                    return item
+            else:
+                if item == predicate:
+                    return item
+    else:
+        for item in lst:
+            if predicate(item):
+                return item
+    return None</code></pre>
 </details>
 </section>
 <section>
@@ -111,6 +153,83 @@
     return keys</code></pre>
 </details>
 </dd>
+<dt id="adash.collection_util.find"><code class="name flex">
+<span>def <span class="ident">find</span></span>(<span>lst, predicate)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Listの中から、predicateの条件に合致する最初の要素を返す。</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>lst</code></strong> :&ensp;<code>list</code></dt>
+<dd>検索対象のリスト。</dd>
+<dt><strong><code>predicate</code></strong> :&ensp;<code>Union[dict, str, Callable]</code></dt>
+<dd>検索条件。辞書、文字列、または関数（ラムダ式を含む）のいずれか。</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>dict</code> or <code>None</code></dt>
+<dd>条件に合致する最初の要素。合致する要素がない場合はNone.</dd>
+</dl>
+<h2 id="example">Example</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; users = [
+...     { 'user': 'barney',  'age': 36, 'active': True },
+...     { 'user': 'fred',    'age': 40, 'active': False },
+...     { 'user': 'pebbles', 'age': 1,  'active': True }
+... ]
+&gt;&gt;&gt; find(users, {'age': 1, 'active': True})
+{'user': 'pebbles', 'age': 1, 'active': True}
+&gt;&gt;&gt; find(users, 'active')
+{'user': 'barney', 'age': 36, 'active': True}
+&gt;&gt;&gt; find(users, lambda x: x['age'] &lt; 40 or not x['active'])
+{'user': 'barney', 'age': 36, 'active': True}
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def find(lst, predicate):
+    &#34;&#34;&#34;
+    Listの中から、predicateの条件に合致する最初の要素を返す。
+    
+    Args:
+        lst (list): 検索対象のリスト。
+        predicate (Union[dict, str, Callable]): 検索条件。辞書、文字列、または関数（ラムダ式を含む）のいずれか。
+    
+    Returns:
+        dict or None: 条件に合致する最初の要素。合致する要素がない場合はNone.
+        
+    Example:
+        &gt;&gt;&gt; users = [
+        ...     { &#39;user&#39;: &#39;barney&#39;,  &#39;age&#39;: 36, &#39;active&#39;: True },
+        ...     { &#39;user&#39;: &#39;fred&#39;,    &#39;age&#39;: 40, &#39;active&#39;: False },
+        ...     { &#39;user&#39;: &#39;pebbles&#39;, &#39;age&#39;: 1,  &#39;active&#39;: True }
+        ... ]
+        &gt;&gt;&gt; find(users, {&#39;age&#39;: 1, &#39;active&#39;: True})
+        {&#39;user&#39;: &#39;pebbles&#39;, &#39;age&#39;: 1, &#39;active&#39;: True}
+        &gt;&gt;&gt; find(users, &#39;active&#39;)
+        {&#39;user&#39;: &#39;barney&#39;, &#39;age&#39;: 36, &#39;active&#39;: True}
+        &gt;&gt;&gt; find(users, lambda x: x[&#39;age&#39;] &lt; 40 or not x[&#39;active&#39;])
+        {&#39;user&#39;: &#39;barney&#39;, &#39;age&#39;: 36, &#39;active&#39;: True}
+    &#34;&#34;&#34;
+    if isinstance(predicate, dict):
+        for item in lst:
+            if all(item[key] == val for key, val in predicate.items()):
+                return item
+    elif isinstance(predicate, str):
+        for item in lst:
+            if isinstance(item, dict):
+                if item.get(predicate) is True:
+                    return item
+            else:
+                if item == predicate:
+                    return item
+    else:
+        for item in lst:
+            if predicate(item):
+                return item
+    return None</code></pre>
+</details>
+</dd>
 </dl>
 </section>
 <section>
@@ -130,6 +249,7 @@
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
 <li><code><a title="adash.collection_util.allkeys" href="#adash.collection_util.allkeys">allkeys</a></code></li>
+<li><code><a title="adash.collection_util.find" href="#adash.collection_util.find">find</a></code></li>
 </ul>
 </li>
 </ul>
