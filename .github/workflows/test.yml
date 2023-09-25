@@ -21,7 +21,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Set up rye
-      uses: atu4403/setup-rye-multiOS
+      uses: atu4403/setup-rye-multiOS@main
 
     - name: Sync dependencies using rye
       run: |
