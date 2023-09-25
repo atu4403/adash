@@ -20,16 +20,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ matrix.python-version }}
-
     - name: Set up rye
-      uses: sksat/setup-rye@main
+      uses: atu4403/setup-rye-multiOS
 
     - name: Sync dependencies using rye
       run: |
+        rye pin ${{ matrix.python-version }}
         rye sync
 
     - name: Run tests with pytest
