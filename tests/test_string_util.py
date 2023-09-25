@@ -1,5 +1,6 @@
-import src.adash as _
 from math import isnan
+
+import src.adash as _
 
 
 class TestReplaceAll:
@@ -87,3 +88,10 @@ class TestHash:
             _.to_sha256("test1")
             == "1b4f0e9851971998e732078544c96b36c3d01cedf7caa332359d6f1d83567014"
         )
+
+
+class TestTextNormalize:
+    def test_01(self):
+        assert _.text_normalize("ﾊﾝｶｸｶﾀｶﾅｚｅｎｋａｋｕ１２３") == "ハンカクカタカナzenkaku123"
+        assert _.text_normalize("①②③１２３") == "①②③123"
+        assert _.text_normalize("①②③１２３", exclude_chars="①１") == "①23１23"

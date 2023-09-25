@@ -1,6 +1,6 @@
+import hashlib
 import re
 import unicodedata
-import hashlib
 from typing import Any
 
 
@@ -141,3 +141,13 @@ def to_sha256(s: str):
         '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08'
     """
     return hashlib.sha256(s.encode()).hexdigest()
+
+
+def text_normalize(text: str, exclude_chars: str = "①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳") -> str:
+    normalized_text = []
+    for char in text:
+        if char in exclude_chars:
+            normalized_text.append(char)
+        else:
+            normalized_text.append(unicodedata.normalize("NFKC", char))
+    return "".join(normalized_text)
