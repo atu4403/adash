@@ -26,9 +26,9 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">import re
+<pre><code class="python">import hashlib
+import re
 import unicodedata
-import hashlib
 from typing import Any
 
 
@@ -168,7 +168,26 @@ def to_sha256(s: str):
         &gt;&gt;&gt; to_sha256(&#39;test&#39;)
         &#39;9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08&#39;
     &#34;&#34;&#34;
-    return hashlib.sha256(s.encode()).hexdigest()</code></pre>
+    return hashlib.sha256(s.encode()).hexdigest()
+
+
+def text_normalize(text: str, exclude_chars: str = &#34;①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳&#34;) -&gt; str:
+    &#34;&#34;&#34;文字列の正規化
+    Example:
+        &gt;&gt;&gt; text_normalize(&#34;ﾊﾝｶｸｶﾀｶﾅｚｅｎｋａｋｕ１２３&#34;)
+        &#39;ハンカクカタカナzenkaku123&#39;
+        &gt;&gt;&gt; text_normalize(&#34;①②③１２３&#34;)
+        &#39;①②③123&#39;
+        &gt;&gt;&gt; text_normalize(&#34;①②③１２３&#34;, exclude_chars=&#34;①１&#34;)
+        &#39;①23１23&#39;
+    &#34;&#34;&#34;
+    normalized_text = []
+    for char in text:
+        if char in exclude_chars:
+            normalized_text.append(char)
+        else:
+            normalized_text.append(unicodedata.normalize(&#34;NFKC&#34;, char))
+    return &#34;&#34;.join(normalized_text)</code></pre>
 </details>
 </section>
 <section>
@@ -235,6 +254,42 @@ def to_sha256(s: str):
         [&#39;Next&#39;, &#39;Accumulated&#39;, &#39;Q2&#39;, &#39;Duration&#39;]
     &#34;&#34;&#34;
     return re.findall(r&#34;[A-Z]+[a-z0-9]*&#34;, s)</code></pre>
+</details>
+</dd>
+<dt id="adash.string_util.text_normalize"><code class="name flex">
+<span>def <span class="ident">text_normalize</span></span>(<span>text: str, exclude_chars: str = '①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳') ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>文字列の正規化</p>
+<h2 id="example">Example</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; text_normalize(&quot;ﾊﾝｶｸｶﾀｶﾅｚｅｎｋａｋｕ１２３&quot;)
+'ハンカクカタカナzenkaku123'
+&gt;&gt;&gt; text_normalize(&quot;①②③１２３&quot;)
+'①②③123'
+&gt;&gt;&gt; text_normalize(&quot;①②③１２３&quot;, exclude_chars=&quot;①１&quot;)
+'①23１23'
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def text_normalize(text: str, exclude_chars: str = &#34;①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳&#34;) -&gt; str:
+    &#34;&#34;&#34;文字列の正規化
+    Example:
+        &gt;&gt;&gt; text_normalize(&#34;ﾊﾝｶｸｶﾀｶﾅｚｅｎｋａｋｕ１２３&#34;)
+        &#39;ハンカクカタカナzenkaku123&#39;
+        &gt;&gt;&gt; text_normalize(&#34;①②③１２３&#34;)
+        &#39;①②③123&#39;
+        &gt;&gt;&gt; text_normalize(&#34;①②③１２３&#34;, exclude_chars=&#34;①１&#34;)
+        &#39;①23１23&#39;
+    &#34;&#34;&#34;
+    normalized_text = []
+    for char in text:
+        if char in exclude_chars:
+            normalized_text.append(char)
+        else:
+            normalized_text.append(unicodedata.normalize(&#34;NFKC&#34;, char))
+    return &#34;&#34;.join(normalized_text)</code></pre>
 </details>
 </dd>
 <dt id="adash.string_util.to_date"><code class="name flex">
@@ -450,6 +505,7 @@ nan
 <ul class="two-column">
 <li><code><a title="adash.string_util.replace_all" href="#adash.string_util.replace_all">replace_all</a></code></li>
 <li><code><a title="adash.string_util.split_uppercase" href="#adash.string_util.split_uppercase">split_uppercase</a></code></li>
+<li><code><a title="adash.string_util.text_normalize" href="#adash.string_util.text_normalize">text_normalize</a></code></li>
 <li><code><a title="adash.string_util.to_date" href="#adash.string_util.to_date">to_date</a></code></li>
 <li><code><a title="adash.string_util.to_half_string" href="#adash.string_util.to_half_string">to_half_string</a></code></li>
 <li><code><a title="adash.string_util.to_md5" href="#adash.string_util.to_md5">to_md5</a></code></li>
