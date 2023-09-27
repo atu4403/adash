@@ -144,6 +144,15 @@ def to_sha256(s: str):
 
 
 def text_normalize(text: str, exclude_chars: str = "①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳") -> str:
+    """文字列の正規化
+    Example:
+        >>> text_normalize("ﾊﾝｶｸｶﾀｶﾅｚｅｎｋａｋｕ１２３")
+        'ハンカクカタカナzenkaku123'
+        >>> text_normalize("①②③１２３")
+        '①②③123'
+        >>> text_normalize("①②③１２３", exclude_chars="①１")
+        '①23１23'
+    """
     normalized_text = []
     for char in text:
         if char in exclude_chars:
