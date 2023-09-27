@@ -23,6 +23,8 @@
 </header>
 <section id="section-intro">
 <p>ユーティリティライブラリ</p>
+<p><a href="https://github.com/atu4403/adash/actions/workflows/test.yml"><img alt="Test" src="https://github.com/atu4403/adash/actions/workflows/test.yml/badge.svg"></a>
+<a href="https://badge.fury.io/py/adash"><img alt="PyPI version" src="https://badge.fury.io/py/adash.svg"></a></p>
 <h2 id="install">install</h2>
 <pre><code class="language-bash">pip install adash
 </code></pre>
@@ -42,15 +44,34 @@ _.replace_all(s, obj) #-&gt; !?!?
 <pre><code class="python">&#34;&#34;&#34;
 .. include:: ../../README.md
 &#34;&#34;&#34;
-from .download import download
-from .string_util import replace_all, to_half_string, to_number, to_date, split_uppercase
-from .proportion import proportion, progress_rate</code></pre>
+from .collection_util import allkeys, find
+from .date_util import date_list
+from .file_util import cat, download, json_read, json_write
+from .proportion import progress_rate, proportion
+from .string_util import (
+    replace_all,
+    split_uppercase,
+    text_normalize,
+    to_date,
+    to_half_string,
+    to_md5,
+    to_number,
+    to_sha256,
+)</code></pre>
 </details>
 </section>
 <section>
 <h2 class="section-title" id="header-submodules">Sub-modules</h2>
 <dl>
-<dt><code class="name"><a title="adash.download" href="download.html">adash.download</a></code></dt>
+<dt><code class="name"><a title="adash.collection_util" href="collection_util.html">adash.collection_util</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="adash.date_util" href="date_util.html">adash.date_util</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="adash.file_util" href="file_util.html">adash.file_util</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -82,7 +103,9 @@ from .proportion import proportion, progress_rate</code></pre>
 <ul id="index">
 <li><h3><a href="#header-submodules">Sub-modules</a></h3>
 <ul>
-<li><code><a title="adash.download" href="download.html">adash.download</a></code></li>
+<li><code><a title="adash.collection_util" href="collection_util.html">adash.collection_util</a></code></li>
+<li><code><a title="adash.date_util" href="date_util.html">adash.date_util</a></code></li>
+<li><code><a title="adash.file_util" href="file_util.html">adash.file_util</a></code></li>
 <li><code><a title="adash.proportion" href="proportion.html">adash.proportion</a></code></li>
 <li><code><a title="adash.string_util" href="string_util.html">adash.string_util</a></code></li>
 </ul>

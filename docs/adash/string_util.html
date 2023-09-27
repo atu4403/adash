@@ -26,7 +26,8 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">import re
+<pre><code class="python">import hashlib
+import re
 import unicodedata
 from typing import Any
 
@@ -58,7 +59,7 @@ def to_half_string(s: str) -&gt; str:
     return unicodedata.normalize(&#34;NFKC&#34;, s)
 
 
-def to_number(s: str, default: Any = float(&#39;NAN&#39;)) -&gt; Any:
+def to_number(s: str, default: Any = float(&#34;NAN&#34;)) -&gt; Any:
     &#34;&#34;&#34;文字列を数値化
     Example:
         &gt;&gt;&gt; to_number(&#39;△12,345&#39;)
@@ -74,11 +75,7 @@ def to_number(s: str, default: Any = float(&#39;NAN&#39;)) -&gt; Any:
         &gt;&gt;&gt; to_number(&#39;abc&#39;, &#39;123&#39;)
         &#39;123&#39;
     &#34;&#34;&#34;
-    rep_dict = {
-        &#39;[△▲Δ]&#39;: &#39;-&#39;,
-        &#39;[,、銭%％]&#39;: &#39;&#39;,
-        &#39;[円]&#39;: &#39;.&#39;
-    }
+    rep_dict = {&#34;[△▲Δ]&#34;: &#34;-&#34;, &#34;[,、銭%％]&#34;: &#34;&#34;, &#34;[円]&#34;: &#34;.&#34;}
     s = to_half_string(s)
     s = replace_all(s, rep_dict)
     try:
@@ -103,27 +100,30 @@ def to_date(s: str) -&gt; Any:
         &gt;&gt;&gt; to_date(&#39;20211010&#39;)
         &#39;2021-10-10&#39;
     &#34;&#34;&#34;
-    meiji = &#39;meiji&#39;
-    taisyou = &#39;taisyou&#39;
-    syouwa = &#39;syouwa&#39;
-    heisei = &#39;heisei&#39;
-    reiwa = &#39;reiwa&#39;
+    meiji = &#34;meiji&#34;
+    taisyou = &#34;taisyou&#34;
+    syouwa = &#34;syouwa&#34;
+    heisei = &#34;heisei&#34;
+    reiwa = &#34;reiwa&#34;
     s = to_half_string(s)
-    s = replace_all(s, {
-        &#39;[年月/]&#39;: &#39;-&#39;,
-        r&#39;[日\s]&#39;: &#39;&#39;,
-        &#39;[元]&#39;: &#39;1&#39;,
-        r&#39;(明治|明)&#39;: meiji,
-        r&#39;(大正|大)&#39;: taisyou,
-        r&#39;(昭和|昭)&#39;: syouwa,
-        r&#39;(平成|平)&#39;: heisei,
-        r&#39;(令和|令)&#39;: reiwa,
-    })
+    s = replace_all(
+        s,
+        {
+            &#34;[年月/]&#34;: &#34;-&#34;,
+            r&#34;[日\s]&#34;: &#34;&#34;,
+            &#34;[元]&#34;: &#34;1&#34;,
+            r&#34;(明治|明)&#34;: meiji,
+            r&#34;(大正|大)&#34;: taisyou,
+            r&#34;(昭和|昭)&#34;: syouwa,
+            r&#34;(平成|平)&#34;: heisei,
+            r&#34;(令和|令)&#34;: reiwa,
+        },
+    )
     # 数字8桁ならハイフン挿入
-    m = re.match(r&#39;^\d{8}$&#39;, s)
+    m = re.match(r&#34;^\d{8}$&#34;, s)
     if m:
-        s = re.sub(r&#39;(\d{4})(\d{2})(\d{2})&#39;, r&#39;\1-\2-\3&#39;, s)
-    m = re.match(r&#39;(\D*)(\d*)-(\d*)-(\d*)&#39;, s)
+        s = re.sub(r&#34;(\d{4})(\d{2})(\d{2})&#34;, r&#34;\1-\2-\3&#34;, s)
+    m = re.match(r&#34;(\D*)(\d*)-(\d*)-(\d*)&#34;, s)
     if m:
         era, year, month, day = m.groups()
         if era:
@@ -138,9 +138,9 @@ def to_date(s: str) -&gt; Any:
             elif era == reiwa:
                 year = int(year) + 2019 - 1
             year = str(year)
-        month = f&#39;0{month}&#39; if len(month) == 1 else month
-        day = f&#39;0{day}&#39; if len(day) == 1 else day
-        return f&#39;{year}-{month}-{day}&#39;
+        month = f&#34;0{month}&#34; if len(month) == 1 else month
+        day = f&#34;0{day}&#34; if len(day) == 1 else day
+        return f&#34;{year}-{month}-{day}&#34;
     return None
 
 
@@ -150,7 +150,44 @@ def split_uppercase(s: str) -&gt; list:
         &gt;&gt;&gt; split_uppercase(&#39;NextAccumulatedQ2Duration&#39;)
         [&#39;Next&#39;, &#39;Accumulated&#39;, &#39;Q2&#39;, &#39;Duration&#39;]
     &#34;&#34;&#34;
-    return re.findall(r&#39;[A-Z]+[a-z0-9]*&#39;, s)</code></pre>
+    return re.findall(r&#34;[A-Z]+[a-z0-9]*&#34;, s)
+
+
+def to_md5(s: str):
+    &#34;&#34;&#34;文字列をmd5化
+    Example:
+        &gt;&gt;&gt; to_md5(&#39;test&#39;)
+        &#39;098f6bcd4621d373cade4e832627b4f6&#39;
+    &#34;&#34;&#34;
+    return hashlib.md5(s.encode()).hexdigest()
+
+
+def to_sha256(s: str):
+    &#34;&#34;&#34;文字列をsha256化
+    Example:
+        &gt;&gt;&gt; to_sha256(&#39;test&#39;)
+        &#39;9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08&#39;
+    &#34;&#34;&#34;
+    return hashlib.sha256(s.encode()).hexdigest()
+
+
+def text_normalize(text: str, exclude_chars: str = &#34;①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳&#34;) -&gt; str:
+    &#34;&#34;&#34;文字列の正規化
+    Example:
+        &gt;&gt;&gt; text_normalize(&#34;ﾊﾝｶｸｶﾀｶﾅｚｅｎｋａｋｕ１２３&#34;)
+        &#39;ハンカクカタカナzenkaku123&#39;
+        &gt;&gt;&gt; text_normalize(&#34;①②③１２３&#34;)
+        &#39;①②③123&#39;
+        &gt;&gt;&gt; text_normalize(&#34;①②③１２３&#34;, exclude_chars=&#34;①１&#34;)
+        &#39;①23１23&#39;
+    &#34;&#34;&#34;
+    normalized_text = []
+    for char in text:
+        if char in exclude_chars:
+            normalized_text.append(char)
+        else:
+            normalized_text.append(unicodedata.normalize(&#34;NFKC&#34;, char))
+    return &#34;&#34;.join(normalized_text)</code></pre>
 </details>
 </section>
 <section>
@@ -216,7 +253,43 @@ def split_uppercase(s: str) -&gt; list:
         &gt;&gt;&gt; split_uppercase(&#39;NextAccumulatedQ2Duration&#39;)
         [&#39;Next&#39;, &#39;Accumulated&#39;, &#39;Q2&#39;, &#39;Duration&#39;]
     &#34;&#34;&#34;
-    return re.findall(r&#39;[A-Z]+[a-z0-9]*&#39;, s)</code></pre>
+    return re.findall(r&#34;[A-Z]+[a-z0-9]*&#34;, s)</code></pre>
+</details>
+</dd>
+<dt id="adash.string_util.text_normalize"><code class="name flex">
+<span>def <span class="ident">text_normalize</span></span>(<span>text: str, exclude_chars: str = '①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳') ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>文字列の正規化</p>
+<h2 id="example">Example</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; text_normalize(&quot;ﾊﾝｶｸｶﾀｶﾅｚｅｎｋａｋｕ１２３&quot;)
+'ハンカクカタカナzenkaku123'
+&gt;&gt;&gt; text_normalize(&quot;①②③１２３&quot;)
+'①②③123'
+&gt;&gt;&gt; text_normalize(&quot;①②③１２３&quot;, exclude_chars=&quot;①１&quot;)
+'①23１23'
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def text_normalize(text: str, exclude_chars: str = &#34;①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳&#34;) -&gt; str:
+    &#34;&#34;&#34;文字列の正規化
+    Example:
+        &gt;&gt;&gt; text_normalize(&#34;ﾊﾝｶｸｶﾀｶﾅｚｅｎｋａｋｕ１２３&#34;)
+        &#39;ハンカクカタカナzenkaku123&#39;
+        &gt;&gt;&gt; text_normalize(&#34;①②③１２３&#34;)
+        &#39;①②③123&#39;
+        &gt;&gt;&gt; text_normalize(&#34;①②③１２３&#34;, exclude_chars=&#34;①１&#34;)
+        &#39;①23１23&#39;
+    &#34;&#34;&#34;
+    normalized_text = []
+    for char in text:
+        if char in exclude_chars:
+            normalized_text.append(char)
+        else:
+            normalized_text.append(unicodedata.normalize(&#34;NFKC&#34;, char))
+    return &#34;&#34;.join(normalized_text)</code></pre>
 </details>
 </dd>
 <dt id="adash.string_util.to_date"><code class="name flex">
@@ -250,27 +323,30 @@ def split_uppercase(s: str) -&gt; list:
         &gt;&gt;&gt; to_date(&#39;20211010&#39;)
         &#39;2021-10-10&#39;
     &#34;&#34;&#34;
-    meiji = &#39;meiji&#39;
-    taisyou = &#39;taisyou&#39;
-    syouwa = &#39;syouwa&#39;
-    heisei = &#39;heisei&#39;
-    reiwa = &#39;reiwa&#39;
+    meiji = &#34;meiji&#34;
+    taisyou = &#34;taisyou&#34;
+    syouwa = &#34;syouwa&#34;
+    heisei = &#34;heisei&#34;
+    reiwa = &#34;reiwa&#34;
     s = to_half_string(s)
-    s = replace_all(s, {
-        &#39;[年月/]&#39;: &#39;-&#39;,
-        r&#39;[日\s]&#39;: &#39;&#39;,
-        &#39;[元]&#39;: &#39;1&#39;,
-        r&#39;(明治|明)&#39;: meiji,
-        r&#39;(大正|大)&#39;: taisyou,
-        r&#39;(昭和|昭)&#39;: syouwa,
-        r&#39;(平成|平)&#39;: heisei,
-        r&#39;(令和|令)&#39;: reiwa,
-    })
+    s = replace_all(
+        s,
+        {
+            &#34;[年月/]&#34;: &#34;-&#34;,
+            r&#34;[日\s]&#34;: &#34;&#34;,
+            &#34;[元]&#34;: &#34;1&#34;,
+            r&#34;(明治|明)&#34;: meiji,
+            r&#34;(大正|大)&#34;: taisyou,
+            r&#34;(昭和|昭)&#34;: syouwa,
+            r&#34;(平成|平)&#34;: heisei,
+            r&#34;(令和|令)&#34;: reiwa,
+        },
+    )
     # 数字8桁ならハイフン挿入
-    m = re.match(r&#39;^\d{8}$&#39;, s)
+    m = re.match(r&#34;^\d{8}$&#34;, s)
     if m:
-        s = re.sub(r&#39;(\d{4})(\d{2})(\d{2})&#39;, r&#39;\1-\2-\3&#39;, s)
-    m = re.match(r&#39;(\D*)(\d*)-(\d*)-(\d*)&#39;, s)
+        s = re.sub(r&#34;(\d{4})(\d{2})(\d{2})&#34;, r&#34;\1-\2-\3&#34;, s)
+    m = re.match(r&#34;(\D*)(\d*)-(\d*)-(\d*)&#34;, s)
     if m:
         era, year, month, day = m.groups()
         if era:
@@ -285,9 +361,9 @@ def split_uppercase(s: str) -&gt; list:
             elif era == reiwa:
                 year = int(year) + 2019 - 1
             year = str(year)
-        month = f&#39;0{month}&#39; if len(month) == 1 else month
-        day = f&#39;0{day}&#39; if len(day) == 1 else day
-        return f&#39;{year}-{month}-{day}&#39;
+        month = f&#34;0{month}&#34; if len(month) == 1 else month
+        day = f&#34;0{day}&#34; if len(day) == 1 else day
+        return f&#34;{year}-{month}-{day}&#34;
     return None</code></pre>
 </details>
 </dd>
@@ -313,6 +389,28 @@ def split_uppercase(s: str) -&gt; list:
     return unicodedata.normalize(&#34;NFKC&#34;, s)</code></pre>
 </details>
 </dd>
+<dt id="adash.string_util.to_md5"><code class="name flex">
+<span>def <span class="ident">to_md5</span></span>(<span>s: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>文字列をmd5化</p>
+<h2 id="example">Example</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; to_md5('test')
+'098f6bcd4621d373cade4e832627b4f6'
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def to_md5(s: str):
+    &#34;&#34;&#34;文字列をmd5化
+    Example:
+        &gt;&gt;&gt; to_md5(&#39;test&#39;)
+        &#39;098f6bcd4621d373cade4e832627b4f6&#39;
+    &#34;&#34;&#34;
+    return hashlib.md5(s.encode()).hexdigest()</code></pre>
+</details>
+</dd>
 <dt id="adash.string_util.to_number"><code class="name flex">
 <span>def <span class="ident">to_number</span></span>(<span>s: str, default: Any = nan) ‑> Any</span>
 </code></dt>
@@ -336,7 +434,7 @@ nan
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def to_number(s: str, default: Any = float(&#39;NAN&#39;)) -&gt; Any:
+<pre><code class="python">def to_number(s: str, default: Any = float(&#34;NAN&#34;)) -&gt; Any:
     &#34;&#34;&#34;文字列を数値化
     Example:
         &gt;&gt;&gt; to_number(&#39;△12,345&#39;)
@@ -352,11 +450,7 @@ nan
         &gt;&gt;&gt; to_number(&#39;abc&#39;, &#39;123&#39;)
         &#39;123&#39;
     &#34;&#34;&#34;
-    rep_dict = {
-        &#39;[△▲Δ]&#39;: &#39;-&#39;,
-        &#39;[,、銭%％]&#39;: &#39;&#39;,
-        &#39;[円]&#39;: &#39;.&#39;
-    }
+    rep_dict = {&#34;[△▲Δ]&#34;: &#34;-&#34;, &#34;[,、銭%％]&#34;: &#34;&#34;, &#34;[円]&#34;: &#34;.&#34;}
     s = to_half_string(s)
     s = replace_all(s, rep_dict)
     try:
@@ -367,6 +461,28 @@ nan
         if float(s).is_integer():
             return int(float(s))
         return float(s)</code></pre>
+</details>
+</dd>
+<dt id="adash.string_util.to_sha256"><code class="name flex">
+<span>def <span class="ident">to_sha256</span></span>(<span>s: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>文字列をsha256化</p>
+<h2 id="example">Example</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; to_sha256('test')
+'9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08'
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def to_sha256(s: str):
+    &#34;&#34;&#34;文字列をsha256化
+    Example:
+        &gt;&gt;&gt; to_sha256(&#39;test&#39;)
+        &#39;9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08&#39;
+    &#34;&#34;&#34;
+    return hashlib.sha256(s.encode()).hexdigest()</code></pre>
 </details>
 </dd>
 </dl>
@@ -386,12 +502,15 @@ nan
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
-<ul class="">
+<ul class="two-column">
 <li><code><a title="adash.string_util.replace_all" href="#adash.string_util.replace_all">replace_all</a></code></li>
 <li><code><a title="adash.string_util.split_uppercase" href="#adash.string_util.split_uppercase">split_uppercase</a></code></li>
+<li><code><a title="adash.string_util.text_normalize" href="#adash.string_util.text_normalize">text_normalize</a></code></li>
 <li><code><a title="adash.string_util.to_date" href="#adash.string_util.to_date">to_date</a></code></li>
 <li><code><a title="adash.string_util.to_half_string" href="#adash.string_util.to_half_string">to_half_string</a></code></li>
+<li><code><a title="adash.string_util.to_md5" href="#adash.string_util.to_md5">to_md5</a></code></li>
 <li><code><a title="adash.string_util.to_number" href="#adash.string_util.to_number">to_number</a></code></li>
+<li><code><a title="adash.string_util.to_sha256" href="#adash.string_util.to_sha256">to_sha256</a></code></li>
 </ul>
 </li>
 </ul>

@@ -1,4 +1,4 @@
-name: Run Tests
+name: Run pytest
 
 on:
   push:
@@ -13,24 +13,16 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
-        python-version: ['3.8', '3.9', '3.10', '3.11']
-
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ['3.8', '3.11']
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
-
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ matrix.python-version }}
-
     - name: Set up rye
-      uses: sksat/setup-rye@main
-
+      uses: atu4403/setup-rye-multiOS@v1
     - name: Sync dependencies using rye
       run: |
+        rye pin ${{ matrix.python-version }}
         rye sync
-
     - name: Run tests with pytest
       run: rye run pytest
