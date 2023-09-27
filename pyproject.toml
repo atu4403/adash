@@ -1,9 +1,9 @@
 [project]
 name = "adash"
-version = "1.4.1"
+version = "1.5.0"
 description = "Utility"
 authors = [
-    { name = "atu4403", email = "73111778+atu4403@users.noreply.github.com" }
+    { name = "atu4403", email = "73111778+atu4403@users.noreply.github.com" },
 ]
 dependencies = []
 readme = "README.md"
