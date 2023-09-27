@@ -19,7 +19,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
     - name: Set up rye
-      uses: atu4403/setup-rye-multiOS@main
+      uses: atu4403/setup-rye-multiOS@v1
     - name: Sync dependencies using rye
       run: |
         rye pin ${{ matrix.python-version }}
