@@ -31,13 +31,14 @@ commit:
 	git commit -m "🚀 new release setup $(PROJECT_NAME)"
 
 create-pr:
-	gh pr create --title "New release $(NEW_VERSION)" --body "Release version $(NEW_VERSION)"
+	gh pr create --title "New release $(NEW_VERSION)" --body "Release version $(NEW_VERSION)" --json number -q 'number' > pr_id.txt
+
 
 # Step 2: Merge PR, tag, and cleanup
 release-step2: approve-pr merge-pr tag-version pull-main delete-branch
 
 approve-pr:
-	gh pr review --approve
+	gh pr review --approve $(shell cat pr_id.txt)
 
 merge-pr:
 	gh pr merge --merge
